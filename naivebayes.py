@@ -10,7 +10,7 @@ from sklearn.metrics import accuracy_score, classification_report, confusion_mat
 '''from sklearn.externals import joblib'''
 
 # Carregar o arquivo CSV
-df = pd.read_csv("base de dados/Fake.br-Corpus-master/preprocessed/pre-processed.csv")
+df = pd.read_csv("pre-processed.csv")
 
 # Dividir os dados em conjuntos de treinamento e teste
 X = df['preprocessed_news']  # texto das notícias pré-processadas
