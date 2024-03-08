@@ -14,6 +14,8 @@ from keras.layers import Embedding, Conv1D, MaxPooling1D, Flatten, Dense
 from keras.preprocessing.text import Tokenizer
 from keras.preprocessing.sequence import pad_sequences
 from sklearn.model_selection import train_test_split
+from keras.callbacks import TensorBoard
+import time
 
 # Carregar o arquivo CSV
 # Caminho do dataset
@@ -52,8 +54,11 @@ model.add(Dense(1, activation='sigmoid'))
 
 model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
 
+# Criar um callback para o TensorBoard
+tensorboard_callback = TensorBoard(log_dir="logs/{}".format(time.time()))
+
 # Treinamento do modelo
-model.fit(X_train_padded, y_train, epochs=10, batch_size=64, validation_split=0.2)
+model.fit(X_train_padded, y_train, epochs=10, batch_size=64, validation_split=0.2, callbacks=[tensorboard_callback])
 
 # Avaliação do modelo
 loss, accuracy = model.evaluate(X_test_padded, y_test)
