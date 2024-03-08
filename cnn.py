@@ -14,6 +14,7 @@ from keras.layers import Embedding, Conv1D, MaxPooling1D, Flatten, Dense
 from keras.preprocessing.text import Tokenizer
 from keras.preprocessing.sequence import pad_sequences
 from sklearn.model_selection import train_test_split
+import joblib
 from keras.callbacks import TensorBoard
 import time
 
@@ -43,7 +44,7 @@ max_length = max([len(s.split()) for s in X_train])
 X_train_padded = pad_sequences(X_train_sequence, maxlen=max_length, padding='post')
 X_test_padded = pad_sequences(X_test_sequence, maxlen=max_length, padding='post')
 
-# Construção da CNN
+# Construção da CNN com Leaky ReLU
 model = Sequential()
 model.add(Embedding(vocab_size, 100, input_length=max_length))
 model.add(Conv1D(128, 5, activation='relu'))
@@ -51,8 +52,7 @@ model.add(MaxPooling1D(5))
 model.add(Flatten())
 model.add(Dense(1, activation='sigmoid'))
 
-
-model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+model.compile(optimizer='SGD', loss='binary_crossentropy', metrics=['accuracy'])
 
 # Criar um callback para o TensorBoard
 tensorboard_callback = TensorBoard(log_dir="logs/{}".format(time.time()))
@@ -64,11 +64,12 @@ model.fit(X_train_padded, y_train, epochs=10, batch_size=64, validation_split=0.
 loss, accuracy = model.evaluate(X_test_padded, y_test)
 print("Test Accuracy:", accuracy)
 
-# Salvar o modelo localmente
-model.save('modelo_cnn.h5')
+# Salvar o modelo no formato nativo do Keras
+model.save('modelo_cnn.keras')
 
-# Salvar o tokenizador localmente
-with open('tokenizer.pickle', 'wb') as handle:
-    pickle.dump(tokenizer, handle, protocol=pickle.HIGHEST_PROTOCOL)
+print("Modelo salvo localmente.")
 
-print("Modelo e tokenizador salvos localmente.")
+# Salvar o tokenizador usando joblib
+joblib.dump(tokenizer, 'tokenizer.joblib')
+
+print("Tokenizador salvo localmente.")
