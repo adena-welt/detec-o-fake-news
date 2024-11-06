@@ -4,10 +4,10 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 
 # Carregar o modelo treinado
-modelo = joblib.load('modelo_xgboost.pkl')
+modelo = joblib.load('xgb_classifier_tfidf.pkl')
 
 # Carregar o vetorizador
-vectorizer = joblib.load('vectorizer.pkl')
+vectorizer = joblib.load('tfidf_vectorizer.pkl')
 
 def remover_acentos(texto):
     # Mapear caracteres acentuados para seus equivalentes não acentuados
