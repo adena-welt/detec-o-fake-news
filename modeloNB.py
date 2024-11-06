@@ -14,10 +14,10 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 
 # Carregar o modelo treinado
-modelo_naive_bayes = joblib.load('Naive Bayes/modelo_naive_bayes.pkl')
+modelo_naive_bayes = joblib.load('modelo_naive_bayes_count.pkl')
 
 # Carregar o vetorizador usado durante o treinamento
-vectorizer = joblib.load('vectorizer.pkl')
+vectorizer = joblib.load('count_vectorizer.pkl')
 
 import re
 
