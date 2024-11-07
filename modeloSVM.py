@@ -4,10 +4,10 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 
 # Carregar o modelo treinado
-modelo = joblib.load('SMV/modelo_svm.pkl')
+modelo = joblib.load('svm_tfidf_vectorizer_model.pkl')
 
 # Carregar o vetorizador usado durante o treinamento
-vectorizer = joblib.load('vectorizer.pkl')
+vectorizer = joblib.load('tfidf_vectorizer.pkl')
 
 def remover_acentos(texto):
     # Mapear caracteres acentuados para seus equivalentes não acentuados
@@ -48,10 +48,16 @@ def classificar_noticia(noticia):
     noticia_vetorizada = vectorizer.transform([noticia_processada])
     # Fazer a previsão usando o modelo treinado
     previsao = modelo.predict(noticia_vetorizada)
-    # Retornar a classe prevista
-    return previsao[0]
+     # Imprimir o texto pré-processado da notícia
+    '''print("\n\nTexto pré-processado da notícia:")
+    print(noticia_processada + "\n\n")'''
+    # Retornar o resultado da previsão
+    if previsao[0] == 'fake':
+        return "A notícia é falsa."
+    else:
+        return "A notícia é verdadeira."
 
 # Exemplo de uso
 noticia = input("Digite a notícia que você gostaria de classificar: ")
 classe = classificar_noticia(noticia)
-print("A notícia é", classe)
+print(classe)
